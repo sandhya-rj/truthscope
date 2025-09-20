@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TruthScope 🔍</title>
+  <style>
+    /* 🌌 Cyberpunk Flickering Background */
+    body {
+      background: radial-gradient(circle at center, #0d0d0d, #000000 80%);
+      color: #00fff7;
+      font-family: 'Courier New', monospace;
+      text-align: center;
+      overflow-x: hidden;
+      animation: bgFlicker 6s infinite;
+    }
+    @keyframes bgFlicker {
+      0%, 100% { background-color: #0d0d0d; }
+      45% { background-color: #0a0a0a; }
+      50% { background-color: #111; }
+      55% { background-color: #0a0a0a; }
+    }
+
+    /* ✨ Floating Neon Particles */
+    .particle {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.8;
+      animation: floatParticle linear infinite;
+      z-index: 1;
+      filter: blur(1px);
+      box-shadow: 0 0 8px currentColor, 0 0 15px currentColor;
+    }
+    @keyframes floatParticle {
+      from { transform: translateY(100vh) scale(0.5); opacity: 0.9; }
+      to { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+
+    /* 🪐 Floating Panels (Hologram Screens) */
+    .panel {
+      border: 2px solid #00fff7;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px auto;
+      box-shadow: 0 0 20px #00fff7, 0 0 40px #ff00ff44;
+      width: 80%;
+      max-width: 700px;
+      animation: floaty 6s ease-in-out infinite, panelFlicker 3s infinite alternate;
+      z-index: 2;
+    }
+    @keyframes floaty {
+      0%   { transform: translateY(0px); }
+      50%  { transform: translateY(-12px); }
+      100% { transform: translateY(0px); }
+    }
+    @keyframes panelFlicker {
+      0%   { box-shadow: 0 0 15px #00fff7, 0 0 30px #ff00ff55; }
+      50%  { box-shadow: 0 0 20px #ff00ff, 0 0 40px #00fff788; }
+      100% { box-shadow: 0 0 10px #00fff7, 0 0 25px #ff00ff44; }
+    }
+
+    /* 🏙 Neon Text + Title */
+    .neon {
+      font-size: 3em;
+      color: #0ff;
+      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #f0f;
+      margin-top: 20px;
+      animation: flicker 3s infinite alternate;
+    }
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #f0f;
+      }
+      20%, 24%, 55% {
+        opacity: 0.4;
+        text-shadow: none;
+      }
+    }
+    .subtitle {
+      color: #ff00ff;
+      text-shadow: 0 0 5px #ff00ff;
+      margin-bottom: 30px;
+    }
+
+    /* Inputs */
+    input[type="file"], input[type="text"], select {
+      background: #111;
+      border: 1px solid #0ff;
+      color: #0ff;
+      padding: 10px;
+      border-radius: 8px;
+      width: 80%;
+      margin: 10px 0;
+    }
+    select {
+      background: linear-gradient(90deg, #111, #222);
+      color: #0ff;
+      border: 2px solid #ff00ff;
+      box-shadow: 0 0 10px #0ff, 0 0 15px #ff00ff66;
+      cursor: pointer;
+    }
+
+    /* Buttons */
+    button {
+      background: #ff00ff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: 0.3s;
+      margin-left: 10px;
+      box-shadow: 0 0 12px #ff00ff;
+    }
+    button:hover {
+      background: #00fff7;
+      color: black;
+      box-shadow: 0 0 20px #00fff7, 0 0 30px #ff00ff;
+    }
+
+    /* 🔮 Result Cards */
+    .result-box, #searchResults li {
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 1.1em;
+      text-align: left;
+      list-style: none;
+      background: rgba(0, 255, 247, 0.05);
+      border: 2px solid #00fff7;
+      box-shadow: 0 0 15px #00fff7, 0 0 30px #ff00ff44;
+      transition: 0.3s;
+    }
+    .result-box:hover, #searchResults li:hover {
+      transform: translateY(-3px);
+      background: rgba(255, 0, 255, 0.1);
+      box-shadow: 0 0 20px #ff00ff, 0 0 40px #00fff7;
+    }
+    .result-box.real { border-color: lime; color: lime; }
+    .result-box.fake { border-color: red; color: red; }
+
+    /* Confidence Bar */
+    .confidence-bar {
+      background: rgba(0,255,247,0.1);
+      border: 1px solid #0ff;
+      height: 10px;
+      border-radius: 8px;
+      margin: 5px 0;
+      overflow: hidden;
+    }
+    .confidence-fill {
+      background: lime;
+      height: 100%;
+      width: 0%;
+      transition: width 0.8s ease;
+    }
+
+    /* 🌐 Links */
+    #searchResults a, .ticker a {
+      color: #00fff7;
+      text-decoration: none;
+      font-weight: bold;
+      text-shadow: 0 0 5px #00fff7, 0 0 10px #ff00ff;
+    }
+    #searchResults a:hover, .ticker a:hover {
+      color: #ff00ff;
+      text-shadow: 0 0 12px #ff00ff, 0 0 25px #00fff7;
+    }
+
+    /* 🔄 Neon Spinner */
+    .spinner {
+      margin: 20px auto;
+      border: 6px solid rgba(0, 255, 255, 0.2);
+      border-top: 6px solid #00fff7;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      box-shadow: 0 0 15px #00fff7;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+
+    /* 📰 News Ticker */
+    .ticker-container {
+      overflow: hidden;
+      border-top: 1px solid #00fff7;
+      border-bottom: 1px solid #00fff7;
+      height: 35px;
+      position: relative;
+      visibility: hidden;
+    }
+    .ticker-container.loaded { visibility: visible; }
+    .ticker {
+      display: inline-flex;
+      white-space: nowrap;
+      will-change: transform;
+      animation: tickerScroll linear infinite;
+      color: #00fff7;
+      text-shadow: 0 0 5px #00fff7, 0 0 10px #ff00ff;
+    }
+    .ticker-container:hover .ticker { animation-play-state: paused; }
+    @keyframes tickerScroll { from { transform: translateX(0);} to { transform: translateX(-100%);} }
+
+    /* 💬 Chatbot Panel */
+    #chatbox {
+      height: 300px;
+      overflow-y: auto;
+      background: rgba(0, 255, 247, 0.05);
+      border: 2px solid #00fff7;
+      padding: 10px;
+      text-align: left;
+      font-size: 0.9em;
+      border-radius: 10px;
+    }
+    .chat-msg { margin: 8px 0; padding: 8px 12px; border-radius: 12px; max-width: 75%; }
+    .chat-user { background: linear-gradient(135deg, #ff00ff88, #ff00ff33); color: #fff; align-self: flex-end; float: right; clear: both;}
+    .chat-bot { background: linear-gradient(135deg, #00fff788, #00fff733); color: #0ff; float: left; clear: both;}
+    .typing { font-style: italic; color: #999; }
+
+    /* Floating Chatbot Icon */
+    #chatIcon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #00fff7;
+      color: #000;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 0 15px #00fff7, 0 0 25px #ff00ff;
+      z-index: 999;
+    }
+    #chatPanel {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 350px;
+      display: none;
+      z-index: 998;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #111; }
+    ::-webkit-scrollbar-thumb {
+      background: #00fff7;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ff00ff;
+    }
+
+    /* 🚀 Neon Progress Bar */
+    .progress-container {
+      width: 80%;
+      margin: 15px auto;
+      background: rgba(0, 255, 247, 0.1);
+      border: 2px solid #0ff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 15px #0ff, 0 0 30px #ff00ff88;
+      display: none;
+    }
+    .progress-bar {
+      height: 20px;
+      width: 0%;
+      background: linear-gradient(90deg, #00fff7, #ff00ff);
+      box-shadow: 0 0 20px #00fff7, 0 0 30px #ff00ff;
+      transition: width 0.4s ease;
+    }
+    .progress-steps {
+      margin-top: 10px;
+      font-size: 1em;
+      color: #0ff;
+      text-shadow: 0 0 5px #ff00ff;
+    }
+  </style>
+</head>
+<body>
+  <!-- 🌌 Floating Neon Particles -->
+  <script>
+    for (let i = 0; i < 30; i++) {
+      let p = document.createElement("div");
+      p.className = "particle";
+      p.style.width = p.style.height = Math.random() * 6 + 4 + "px";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.animationDuration = Math.random() * 10 + 5 + "s";
+      p.style.background = Math.random() > 0.5 ? "#00fff7" : "#ff00ff";
+      document.body.appendChild(p);
+    }
+  </script>
+
+  <!-- 🎛 Title -->
+  <h1 class="neon">TruthScope 🔍</h1>
+  <p class="subtitle">Real-time Deepfake & Fake News Detector</p>
+
+  <!-- Upload Panel -->
+  <div class="panel">
+    <h2>🎥 Upload Video/Image</h2>
+    <form id="uploadForm">
+      <input type="file" id="fileInput" />
+      <button type="submit">Analyze</button>
+    </form>
+    <div id="uploadResult"></div>
+    <!-- 🔮 Fake Progress UI -->
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-steps" id="progressSteps"></div>
+  </div>
+
+  <!-- Headline Check -->
+  <div class="panel">
+    <h2>📰 Check News Headline</h2>
+    <input type="text" id="headlineInput" placeholder="Paste headline here..." />
+    <button onclick="checkHeadline()">Check</button>
+    <div id="headlineResult"></div>
+  </div>
+
+  <!-- Trusted News -->
+  <div class="panel">
+    <h2>🌍 Live Trusted News</h2>
+    <label for="countrySelect">Select Country:</label>
+    <select id="countrySelect" onchange="refreshTrusted()">
+      <option value="us">USA</option>
+      <option value="gb">UK</option>
+      <option value="in">India</option>
+      <option value="ca">Canada</option>
+      <option value="au">Australia</option>
+    </select>
+    <div class="ticker-container">
+      <div id="trustedNews" class="ticker"><span>Loading news...</span></div>
+    </div>
+  </div>
+
+  <!-- Search News -->
+  <div class="panel">
+    <h2>🔎 Search News</h2>
+    <input type="text" id="searchInput" placeholder="Enter keyword..." />
+    <button onclick="searchNews()">Search</button>
+    <ul id="searchResults"></ul>
+  </div>
+
+  <!-- Chatbot Floating -->
+  <div id="chatIcon">💬</div>
+  <div id="chatPanel" class="panel">
+    <h2>🤖 TruthScope Chatbot</h2>
+    <div id="chatbox"></div>
+    <input type="text" id="chatInput" placeholder="Ask me anything..." />
+    <button onclick="sendChat()">Send</button>
+  </div>
+
+<script>
+document.getElementById("uploadForm").addEventListener("submit", async function(e){
+  e.preventDefault();
+  const file = document.getElementById("fileInput").files[0];
+  if (!file) return;
+  
+  let resultBox = document.getElementById("uploadResult");
+  resultBox.innerHTML = `<div class="spinner"></div><p>⏳ Extracting frames...</p>`;
+
+  // Show step messages before backend result
+  let steps = [
+    "🔍 Extracting frames...",
+    "🧠 Running deepfake analysis...",
+    "📊 Checking inconsistencies...",
+    "✅ Finalizing verdict..."
+  ];
+
+  let stepIndex = 0;
+  let interval = setInterval(() => {
+    if (stepIndex < steps.length) {
+      resultBox.innerHTML = `<div class="spinner"></div><p>${steps[stepIndex]}</p>`;
+      stepIndex++;
+    } else {
+      clearInterval(interval);
+    }
+  }, 2000); // 2 seconds per step
+
+  let formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const res = await fetch("/upload", { method: "POST", body: formData });
+    const data = await res.json();
+
+    // Wait until steps finish
+    setTimeout(() => {
+      let verdictClass = data.verdict.includes("Real") ? "real" : "fake";
+      resultBox.innerHTML = `
+        <div class="result-box ${verdictClass}">
+          <strong>Verdict:</strong> ${data.verdict}<br>
+          <strong>Confidence:</strong> ${Math.round((data.confidence || 0) * 100)}%<br>
+          <div class="confidence-bar"><div class="confidence-fill" style="width:${Math.round((data.confidence||0)*100)}%"></div></div>
+          <strong>Details:</strong> ${data.details}
+        </div>`;
+    }, steps.length * 2000); // wait until all steps finish
+  } catch (err) {
+    resultBox.innerHTML = `<p style="color:red;">Error: ${err.message}</p>`;
+  }
+});
+
+
+async function checkHeadline() {
+  const headline = document.getElementById("headlineInput").value;
+  if (!headline) return;
+
+  document.getElementById("headlineResult").innerHTML = `<div class="spinner"></div>`;
+
+  try {
+    const res = await fetch("/check_news", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ headline })
+    });
+    const data = await res.json();
+    let verdictClass = data.verdict.includes("Real") ? "real" : "fake";
+
+    let evidenceHtml = "None";
+    if (data.evidence && data.evidence.length > 0) {
+      evidenceHtml = data.evidence
+        .map(ev => ev.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">🔗 Link</a>'))
+        .join("<br>");
+    }
+
+    document.getElementById("headlineResult").innerHTML = `
+      <div class="result-box ${verdictClass}">
+        <strong>Verdict:</strong> ${data.verdict}<br>
+        <strong>Evidence:</strong><br>${evidenceHtml}<br>
+        <strong>Explanation:</strong><br>${data.explanation || "N/A"}
+      </div>`;
+  } catch (err) {
+    document.getElementById("headlineResult").innerHTML = `<p style="color:red;">Error: ${err.message}</p>`;
+  }
+}
+
+async function refreshTrusted() {
+  const country = document.getElementById("countrySelect").value;
+  const container = document.querySelector(".ticker-container");
+  const ticker = document.getElementById("trustedNews");
+
+  try {
+    // force English headlines regardless of country
+    const res = await fetch(`/trusted_news?country=${country}`);
+    const data = await res.json();
+
+    if (!data || data.length === 0) {
+      ticker.innerHTML = "<span>⚠ No news available</span>";
+      container.classList.add("loaded");
+      return;
+    }
+
+    // headlines in English only
+    const newsLinks = data
+      .map(item => `<a href="${item.url}" target="_blank">🌐 ${item.headline}</a>`)
+      .join(" ⏺ ");
+
+    ticker.innerHTML = `
+      <span class="ticker-text">${newsLinks}</span>
+      <span class="ticker-text">${newsLinks}</span>
+    `;
+
+    requestAnimationFrame(() => {
+      const tickerText = ticker.querySelector(".ticker-text");
+      if (tickerText) {
+        const width = tickerText.offsetWidth;
+        const baseSpeed = 80; // adjust scroll speed
+        const duration = width / baseSpeed;
+        ticker.style.animationDuration = `${duration}s`;
+      }
+      container.classList.add("loaded");
+    });
+
+  } catch (err) {
+    ticker.innerHTML = "<span>⚠ Error loading news</span>";
+    container.classList.add("loaded");
+  }
+}
+setInterval(refreshTrusted, 15000); // refresh every 15s
+refreshTrusted();
+
+async function searchNews() {
+  const query = document.getElementById("searchInput").value;
+  if (!query) { alert("Please enter a search term!"); return; }
+  const res = await fetch(`/search_news?q=${encodeURIComponent(query)}`);
+  const data = await res.json();
+  document.getElementById("searchResults").innerHTML = data.map(article => 
+    `<li><a href="${article.url}" target="_blank">${article.headline}</a></li>`
+  ).join("");
+}
+
+const chatIcon = document.getElementById("chatIcon");
+const chatPanel = document.getElementById("chatPanel");
+chatIcon.addEventListener("click", () => {
+  chatPanel.style.display = chatPanel.style.display === "block" ? "none" : "block";
+});
+
+async function sendChat() {
+  const input = document.getElementById("chatInput");
+  const msg = input.value;
+  if (!msg) return;
+  
+  const chatbox = document.getElementById("chatbox");
+  chatbox.innerHTML += `<div class="chat-msg chat-user">${msg}</div>`;
+  input.value = "";
+  chatbox.innerHTML += `<div class="chat-msg chat-bot typing">Typing...</div>`;
+  chatbox.scrollTop = chatbox.scrollHeight;
+
+  try {
+    const res = await fetch("/chatbot", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: msg })
+    });
+    const data = await res.json();
+    chatbox.querySelector(".typing").remove();
+    chatbox.innerHTML += `<div class="chat-msg chat-bot">${data.response}</div>`;
+    chatbox.scrollTop = chatbox.scrollHeight;
+  } catch (err) {
+    chatbox.querySelector(".typing").remove();
+    chatbox.innerHTML += `<div class="chat-msg chat-bot">⚠ Error: ${err.message}</div>`;
+  }
+}
+
+/* 🚀 Fake Progress Bar Simulation */
+function fakeProgress() {
+  const steps = [
+    "Extracting frames…",
+    "Analyzing faces…",
+    "Scanning metadata…",
+    "Checking inconsistencies…",
+    "Finalizing verdict…"
+  ];
+  const bar = document.getElementById("progressBar");
+  const container = document.getElementById("progressContainer");
+  const stepsDiv = document.getElementById("progressSteps");
+  let progress = 0;
+  let stepIndex = 0;
+  container.style.display = "block";
+  stepsDiv.textContent = steps[0];
+  const interval = setInterval(() => {
+    progress += Math.random() * 15;
+    if (progress > 100) progress = 100;
+    bar.style.width = progress + "%";
+    if (progress > (stepIndex + 1) * 20 && stepIndex < steps.length - 1) {
+      stepIndex++;
+      stepsDiv.textContent = steps[stepIndex];
+    }
+    if (progress >= 100) {
+      clearInterval(interval);
+      setTimeout(() => {
+        container.style.display = "none";
+        stepsDiv.textContent = "";
+        bar.style.width = "0%";
+      }, 1500);
+    }
+  }, 800);
+}
+
+</script>
+
+<!-- 🚀 FUTURISTIC UPGRADES -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Orbitron', sans-serif !important;
+  }
+
+  /* Glitchy TruthScope Title */
+  h1.neon {
+    position: relative;
+    display: inline-block;
+    font-size: 3.5em;
+    animation: none !important;
+  }
+  h1.neon::before, h1.neon::after {
+    content: attr(class);
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    overflow: hidden;
+    color: #ff00ff;
+    clip: rect(0, 900px, 0, 0);
+    animation: glitch 2s infinite;
+  }
+  h1.neon::after {
+    color: #00fff7;
+    animation: glitch 3s infinite;
+  }
+  @keyframes glitch {
+    0% { clip: rect(42px, 9999px, 44px, 0); }
+    20% { clip: rect(12px, 9999px, 16px, 0); }
+    40% { clip: rect(85px, 9999px, 90px, 0); }
+    60% { clip: rect(24px, 9999px, 30px, 0); }
+    80% { clip: rect(55px, 9999px, 60px, 0); }
+    100% { clip: rect(10px, 9999px, 14px, 0); }
+  }
+
+  /* Tron Grid Background */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(#0ff 1px, transparent 1px), linear-gradient(90deg, #0ff 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.05;
+    animation: gridMove 20s linear infinite;
+    z-index: 0;
+  }
+  @keyframes gridMove {
+    from { background-position: 0 0, 0 0; }
+    to { background-position: 100px 100px, 100px 100px; }
+  }
+
+  /* Matrix Data Rain Overlay */
+  .matrix-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(180deg, rgba(0,255,255,0.1) 0px, transparent 2px, transparent 20px);
+    animation: rainMove 10s linear infinite;
+    z-index: 1;
+  }
+  @keyframes rainMove {
+    from { background-position: 0 -100%; }
+    to { background-position: 0 100%; }
+  }
+
+  /* DNA Helix Loader */
+  .dna-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    width: 60px; height: 60px;
+    position: relative;
+    perspective: 1000px;
+  }
+  .dna-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #0ff;
+    position: absolute;
+    animation: dnaAnim 2s linear infinite;
+  }
+  .dna-dot:nth-child(2n) { background: #f0f; }
+  @keyframes dnaAnim {
+    0% { transform: rotateY(0deg) translateX(20px) rotateY(0deg); }
+    100% { transform: rotateY(360deg) translateX(20px) rotateY(-360deg); }
+  }
+
+  /* Confidence Bar Pulse */
+  .confidence-fill {
+    animation: pulse 1.5s infinite alternate;
+  }
+  @keyframes pulse {
+    from { filter: drop-shadow(0 0 5px lime); }
+    to { filter: drop-shadow(0 0 15px lime); }
+  }
+
+  /* Truth Mode Overlay */
+  .truth-mode {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,255,255,0.1);
+    mix-blend-mode: difference;
+    display: none;
+    z-index: 9999;
+    animation: truthGlitch 0.2s infinite;
+  }
+  @keyframes truthGlitch {
+    0% { clip: rect(0, 9999px, 20px, 0); }
+    20% { clip: rect(30px, 9999px, 60px, 0); }
+    40% { clip: rect(10px, 9999px, 80px, 0); }
+    60% { clip: rect(50px, 9999px, 90px, 0); }
+    80% { clip: rect(70px, 9999px, 100px, 0); }
+    100% { clip: rect(20px, 9999px, 40px, 0); }
+  }
+</style>
+<div class="matrix-overlay"></div>
+<div class="truth-mode"></div>
+<script>
+  // DNA loader injection
+  document.querySelectorAll(".spinner").forEach(spinner => {
+    let dna = document.createElement("div");
+    dna.className = "dna-loader";
+    for (let i=0; i<12; i++) {
+      let dot = document.createElement("div");
+      dot.className = "dna-dot";
+      dot.style.animationDelay = `${i*0.15}s`;
+      dna.appendChild(dot);
+    }
+    spinner.replaceWith(dna);
+  });
+
+  // Truth Mode Easter Egg (CTRL+ALT+T)
+  let truthOverlay = document.querySelector(".truth-mode");
+  window.addEventListener("keydown", e => {
+    if (e.ctrlKey && e.altKey && e.key.toLowerCase() === "t") {
+      truthOverlay.style.display = truthOverlay.style.display === "block" ? "none" : "block";
+    }
+  });
+</script>
+</body>
+</html>

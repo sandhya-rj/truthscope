@@ -1,0 +1,182 @@
+/* 🌌 Cyberpunk Flickering Background */
+body {
+  background: radial-gradient(circle at center, #0d0d0d, #000000 80%);
+  color: #00fff7;
+  font-family: 'Courier New', monospace;
+  text-align: center;
+  overflow-x: hidden;
+  animation: bgFlicker 6s infinite;
+}
+@keyframes bgFlicker {
+  0%, 100% { background-color: #0d0d0d; }
+  45% { background-color: #0a0a0a; }
+  50% { background-color: #111; }
+  55% { background-color: #0a0a0a; }
+}
+
+/* ✨ Floating Neon Particles */
+.particle {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.8;
+  animation: floatParticle linear infinite;
+  z-index: 1;
+  filter: blur(1px);
+  box-shadow: 0 0 8px currentColor, 0 0 15px currentColor;
+}
+@keyframes floatParticle {
+  from {
+    transform: translateY(100vh) translateX(0) scale(0.5);
+    opacity: 0.9;
+  }
+  to {
+    transform: translateY(-10vh) translateX(50px) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* 🪐 Floating Panels (Hologram Screens) */
+.panel {
+  border: 2px solid #00fff7;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+  box-shadow: 0 0 20px #00fff7, 0 0 40px #ff00ff44;
+  width: 80%;
+  max-width: 700px;
+  animation: floaty 6s ease-in-out infinite, panelFlicker 3s infinite alternate;
+  z-index: 2;
+}
+@keyframes floaty {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+@keyframes panelFlicker {
+  0%   { box-shadow: 0 0 15px #00fff7, 0 0 30px #ff00ff55; }
+  50%  { box-shadow: 0 0 20px #ff00ff, 0 0 40px #00fff788; }
+  100% { box-shadow: 0 0 10px #00fff7, 0 0 25px #ff00ff44; }
+}
+
+/* 🏙 Neon Text + Title */
+.neon {
+  font-size: 3em;
+  color: #0ff;
+  text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #f0f;
+  margin-top: 20px;
+}
+.subtitle {
+  color: #ff00ff;
+  text-shadow: 0 0 5px #ff00ff;
+  margin-bottom: 30px;
+}
+
+/* Inputs */
+input[type="file"], input[type="text"] {
+  background: #111;
+  border: 1px solid #0ff;
+  color: #0ff;
+  padding: 10px;
+  border-radius: 8px;
+  width: 80%;
+  margin: 10px 0;
+}
+
+/* Buttons */
+button {
+  background: #ff00ff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: 0.3s;
+  margin-left: 10px;
+  box-shadow: 0 0 12px #ff00ff;
+}
+button:hover {
+  background: #00fff7;
+  color: black;
+  box-shadow: 0 0 20px #00fff7, 0 0 30px #ff00ff;
+}
+
+/* 🔮 Result Cards */
+.result-box, #searchResults li {
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 12px;
+  font-size: 1.1em;
+  text-align: left;
+  list-style: none;
+  background: rgba(0, 255, 247, 0.05);
+  border: 2px solid #00fff7;
+  box-shadow: 0 0 15px #00fff7, 0 0 30px #ff00ff44;
+  transition: 0.3s;
+}
+.result-box:hover, #searchResults li:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 0, 255, 0.1);
+  box-shadow: 0 0 20px #ff00ff, 0 0 40px #00fff7;
+}
+.result-box.real {
+  border-color: lime;
+  color: lime;
+}
+.result-box.fake {
+  border-color: red;
+  color: red;
+}
+
+/* 🌐 Links */
+#searchResults a, .ticker a {
+  color: #00fff7;
+  text-decoration: none;
+  font-weight: bold;
+  text-shadow: 0 0 5px #00fff7, 0 0 10px #ff00ff;
+}
+#searchResults a:hover, .ticker a:hover {
+  color: #ff00ff;
+  text-shadow: 0 0 12px #ff00ff, 0 0 25px #00fff7;
+}
+
+/* 🔄 Neon Spinner */
+.spinner {
+  margin: 20px auto;
+  border: 6px solid rgba(0, 255, 255, 0.2);
+  border-top: 6px solid #00fff7;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  box-shadow: 0 0 15px #00fff7;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 📰 News Ticker */
+.ticker-container {
+  overflow: hidden;
+  border-top: 1px solid #00fff7;
+  border-bottom: 1px solid #00fff7;
+  height: 35px;
+  position: relative;
+}
+.ticker {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+  animation: tickerScroll linear infinite;
+  color: #00fff7;
+  text-shadow: 0 0 5px #00fff7, 0 0 10px #ff00ff;
+}
+.ticker-container:hover .ticker {
+  animation-play-state: paused;
+}
+@keyframes tickerScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

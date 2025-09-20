@@ -1,0 +1,12 @@
+flask
+pathway
+feedparser
+deepface
+opencv-python
+numpy
+Pillow
+requests
+openai
+rapidfuzz
+python-dotenv
+Werkzeug
