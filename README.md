@@ -1,76 +1,86 @@
-TruthScope 🕵️‍♂️🔍
+# 🔍 TruthScope  
 
-AI-powered Fake News Detection System
+**TruthScope** is an AI-powered misinformation detection platform. It verifies news headlines, articles, and media content against trusted sources using RSS feeds, APIs, and AI-powered fact-checking models.  
 
-TruthScope is an end-to-end project that detects fake news using machine learning and deep learning models.
-Built with Python, Flask, and NLP techniques, this tool analyzes news content and predicts whether it is real or fake.
+---
 
-⚡ Features
+## 🚀 Features
+- ✅ **Fact-checking** using trusted RSS sources (BBC, Reuters, Al Jazeera, WHO, etc.)
+- 🤖 **AI-powered verdicts** (real/fake/unverified) with explanations
+- 📰 **News Ticker** showing live trusted headlines
+- 🎨 **Cyberpunk-styled frontend** with neon UI
+- 🔍 **Fuzzy matching** of headlines to catch misleading variations
+- 📷 **DeepFake analysis** using DeepFace + OpenCV (optional extension)
+- ⚡ Runs on **Flask** + **Pathway** for stream processing  
 
-End-to-end Fake News Detection pipeline.
+---
 
-Deep Learning model (model_fake_detection.h5) trained on news datasets.
+## ⚙️ Setup Instructions (Windows + WSL Required ⚠️)
 
-Flask web app (app.py) for easy user interaction.
+> ⚠️ **Important:** Pathway SDK does not support Windows natively.  
+> You **must** use **Windows Subsystem for Linux (WSL – Ubuntu)**.  
+> All project files should be created **inside Ubuntu**, not in Windows filesystem.
 
-Deployed and run inside Ubuntu (WSL) due to Pathway SDK not being supported on Windows.
+### 1️⃣ Open Ubuntu Terminal (WSL)
+Make sure your project folder exists inside Ubuntu. Example:
+```bash
+cd ~
+mkdir truthscope
+cd truthscope
+2️⃣ Clone the Repository
+bash
+Copy code
+git clone https://github.com/sandhya-rj/truthscope.git
+cd truthscope
+3️⃣ Create Virtual Environment
+Before running anything, create and activate a Python virtual environment:
 
-Virtual environment setup for clean dependency management.
+bash
+Copy code
+python3 -m venv venv
+source venv/bin/activate
+⚠️ You must activate venv every time before running app.py.
 
-🛠️ Tech Stack
-
-Python 3
-
-Flask (Web Framework)
-
-TensorFlow / Keras (Deep Learning)
-
-scikit-learn, pandas, numpy (ML + Data Handling)
-
-NLTK / NLP Preprocessing
-
-Ubuntu (WSL) for execution
+4️⃣ Install Dependencies
+bash
+Copy code
+pip install -r requirements.txt
+5️⃣ Run the App
+bash
+Copy code
+python3 app.py
+Now open http://127.0.0.1:5000 in your browser 🎉
 
 📂 Project Structure
+lua
+Copy code
 truthscope/
-│── app.py               # Flask app entry point  
-│── requirements.txt      # Dependencies  
-│── model_fake_detection.h5  # Trained ML/DL model  
-│── static/               # CSS, JS, images  
-│── templates/            # HTML templates  
-│── README.md             # Project documentation  
-│── .gitignore            # Ignored files (venv, caches, etc.)
+│-- app.py              # Flask backend
+│-- requirements.txt    # Dependencies
+│-- static/             # CSS, JS, images
+│-- templates/          # HTML templates
+│-- .gitignore
+│-- README.md
+🌍 Deployment Notes
+Works only inside Ubuntu (WSL) on Windows.
 
-⚙️ Installation & Setup
+venv must always be activated before installing dependencies or running the app.
 
-Since Pathway SDK is not supported on Windows, we run everything inside Ubuntu (WSL).
-Follow these steps:
+Can be deployed to Render / Railway / Heroku / Vercel if needed.
 
-# 1. Navigate to project folder
+👩‍💻 Author
+Sandhya RJ → GitHub
+
+yaml
+Copy code
+
+---
+
+Now just run these to push it:
+
+```bash
 cd ~/truthscope
-
-# 2. Create virtual environment
-python3 -m venv venv
-
-# 3. Activate venv
-source venv/bin/activate
-
-# 4. Install dependencies
-pip install -r requirements.txt
-
-# 5. Run Flask app
-python3 app.py
-
-🚀 Usage
-
-Open browser → go to http://127.0.0.1:5000/
-
-Enter a news headline/article → Get prediction (REAL or FAKE)
-
-⚠️ Notes
-
-The trained model file (model_fake_detection.h5) is large (>80MB). Consider using Git LFS for version control.
-
-Always activate virtual environment before running app.py or installing requirements.
-
-Keep project inside Ubuntu WSL (not Windows native) to avoid compatibility issues.
+echo "<PASTE THE README ABOVE>" > README.md
+git add README.md
+git commit -m "Add detailed README with WSL + venv instructions"
+git push
