@@ -1,6 +1,6 @@
 # 🔍 TruthScope  
 
-**TruthScope** is an AI-powered misinformation detection platform. It verifies news headlines, articles, and media content against trusted sources using RSS feeds, APIs, and AI-powered fact-checking models.  
+**TruthScope** is an AI-powered misinformation & deepfake detection platform. It verifies news headlines, articles, and media content against trusted sources using RSS feeds, APIs and AI-powered fact-checking models combined with DeepFake detection.
 
 ---
 
